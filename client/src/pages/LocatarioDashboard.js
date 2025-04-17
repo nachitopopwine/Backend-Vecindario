@@ -1,5 +1,12 @@
+import React from "react";
+
 function LocatarioDashboard() {
-    return <h2>Panel del Locatario</h2>;
-  }
-  
-  export default LocatarioDashboard;
+  return (
+    <div>
+      <h1>Bienvenido al Menú del Locatario</h1>
+      <p>Aquí puedes gestionar tus propiedades.</p>
+    </div>
+  );
+}
+
+export default LocatarioDashboard;

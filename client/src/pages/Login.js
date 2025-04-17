@@ -1,29 +1,56 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate();
+
+  // Usuarios predefinidos
+  const users = [
+    { email: "admin@admin.com", password: "admin", role: "admin" },
+    { email: "locatario@user.com", password: "locatario", role: "locatario" },
+    { email: "comprador@user.com", password: "comprador", role: "comprador" },
+    { email: "repartidor@user.com", password: "repartidor", role: "repartidor" },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validaciones simples
-    if (!email || !password) {
-      setError('Por favor, completa todos los campos.');
-      setSuccess('');
-      return;
-    }
+    // Validar credenciales
+    const user = users.find(
+      (u) => u.email === email && u.password === password
+    );
 
-    // Simulación de autenticación
-    if (email === 'admin@vecindario.com' && password === '123456') {
-      setSuccess('Inicio de sesión exitoso.');
-      setError('');
+    if (user) {
+      setSuccess("Inicio de sesión exitoso.");
+      setError("");
+      console.log(`Usuario autenticado correctamente: ${user.role}`);
+
+      // Redirigir al menú correspondiente
+      switch (user.role) {
+        case "admin":
+          navigate("/admin");
+          break;
+        case "locatario":
+          navigate("/locatario");
+          break;
+        case "comprador":
+          navigate("/comprador");
+          break;
+        case "repartidor":
+          navigate("/repartidor");
+          break;
+        default:
+          navigate("/");
+      }
     } else {
-      setError('Correo o contraseña incorrectos.');
-      setSuccess('');
+      setError("Credenciales incorrectas. Inténtalo de nuevo.");
+      setSuccess("");
     }
   };
 
@@ -43,7 +70,6 @@ function Login() {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="password">Contraseña:</label>
           <input
@@ -54,8 +80,9 @@ function Login() {
             required
           />
         </div>
-
-        <button className="login-button" type="submit">Ingresar</button>
+        <button className="login-button" type="submit">
+          Ingresar
+        </button>
       </form>
     </div>
   );
